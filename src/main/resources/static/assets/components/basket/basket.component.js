@@ -1,4 +1,18 @@
 if(app){ //ensure app is defined
+	app.factory('BasketService',[
+		'Restangular',
+		function(Restangular){
+			var BasketService = {};
+			var restB
+			BasketService.add = function(ownerName){
+				var restBase = Restangular.all('/api/baskets');
+				var resultPromise = restBase.post({
+					ownerName:ownerName
+				});
+				return resultPromise;
+			};
+			return BasketService;
+		}]);
 	app.component('basket',{
 		templateUrl:'assets/components/basket/basket.component.html',
 		controllerAs: '$ctrl',
@@ -7,7 +21,8 @@ if(app){ //ensure app is defined
 		},
 		controller: [
 			'$scope',
-			function BasketController($scope){
+			'BasketService',
+			function BasketController($scope,BasketService){
 				$scope.operationType = '';
 				var lastBasketId = 2;
 				$scope.baskets = [
@@ -28,7 +43,18 @@ if(app){ //ensure app is defined
 				$scope.doAction=function(){
 					switch($scope.operationType){
 					case 'Add': addBasket();
+					            addBasketToApi();
 					}
+				}
+				
+				function addBasketToApi(){
+					BasketService.add($scope.$ctrl.ownerName)
+					   .then(function success(response){
+						   console.log(response);
+						   window.alert("We successfully added basket to api");
+					   },function error(){
+						   window.alert("We were unable to add basket with api");
+					   })
 				}
 				
 				function addBasket(){
