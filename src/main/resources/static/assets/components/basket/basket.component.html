@@ -1,1 +1,13 @@
-<h1>Basket Component Included</h1>
+<div class="row options">
+    <button id="btnAdd">Add</button>
+    <button id="btnRemove">Remove</button>
+    <button id="btnRefresh">Refresh</button>
+</div>
+<div class="row fruit-listings">
+   <ul>
+      <li ng-repeat="basket in baskets">
+          <img src="assets/img/basketicon.jpg"/>
+          <strong> Basket {{ basket.id}}  for {{ basket.ownerName }}</strong>
+      </li>
+   </ul>
+</div>

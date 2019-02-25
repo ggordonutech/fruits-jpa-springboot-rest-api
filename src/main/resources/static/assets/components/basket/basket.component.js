@@ -4,7 +4,16 @@ if(app){ //ensure app is defined
 		controller: [
 			'$scope',
 			function BasketController($scope){
-				
+				$scope.baskets = [
+					{
+						id:1,
+						ownerName:"Hermione Granger"
+					},
+					{
+						id:2,
+						ownerName:"Tom Riddle"
+					}
+				];
 			}
 		]
 	});
