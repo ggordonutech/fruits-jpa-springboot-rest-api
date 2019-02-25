@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+   <head>
+       <link href="assets/css/app.css" rel="stylesheet"/>
+       <title>Fruit Basket Tutorial</title>
+   </head>
+   <body>
+      <div class="row app">
+          <div class="row header">
+              <img src="assets/img/fruitbasket.jpg" alt="Fruit Basket" />
+              <h1><i><u>Le Fruit a la carte!</u></i></h1>
+          </div>
+          <div class="row options">
+             <button id="btnAdd">Add</button>
+             <button id="btnRemove">Remove</button>
+             <button id="btnRefresh">Refresh</button>
+          </div>
+          <div class="row fruit-listings">
+             <p>No Listings available</p>
+          </div>
+      </div>
+      <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
+      <script type="text/javascript" src="assets/js/app.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function(){
+        	  $('#btnAdd').click(function(){
+        		  var ownerName = window.prompt("Please enter the name of the owner to create a basket for:");
+        		  if(window.confirm("Are you sure you would like to create a basket for "+ownerName)){
+        			  $.ajax({
+        				  url: '/api/baskets',
+        				  type:'post',
+        				  data:JSON.stringify({
+        					 "ownerName":ownerName  
+        				  }),
+        				  contentType:'application/json',
+        				  success:function(response){
+        					  window.alert("Basket created successfully")
+        					  console.log("Added Basket",response);
+        					  $('#btnRefresh').trigger('click');
+        				  },
+        				  error:function(err){
+        					  window.alert("We were unable to create this basket at this time");
+        					  console.error(err);
+        				  }
+        			  });
+        		  }
+        	  });
+        	  
+        	  $('#btnRemove').click(function(){
+        		  var id = window.prompt("Please enter the id of the basket to remove");
+        		  
+        		  if(window.confirm("Are you sure you would like to remove basket with id : "+id)){
+        			  $.ajax({
+        				  url: '/api/baskets/'+id,
+        				  type:'delete',
+        				  contentType:'application/json',
+        				  success:function(response){
+        					  window.alert("Basket removed successfully")
+        					  console.log("Removed Basket",response);
+        					  $('#btnRefresh').trigger('click');
+        				  },
+        				  error:function(err){
+        					  window.alert("We were unable to remove this basket at this time");
+        					  console.error(err);
+        				  }
+        			  });
+        		  }
+        	  });
+        	  
+        	  $("#btnRefresh").click(function(){
+        		  $.ajax({
+    				  url: '/api/baskets',
+    				  type:'get',
+    				  contentType:'application/json',
+    				  success:function(baskets){
+    					  var newListingHtml='<ul>';
+    					  for(var i=0;i<baskets.length;i++){
+    						  newListingHtml+='<li> <img src="assets/img/basketicon.jpg"/><strong>'
+    					      newListingHtml+='Basket '+baskets[i].id+" for "+baskets[i].ownerName;
+    						  newListingHtml+='</strong></li>';  
+    					  }
+    					  newListingHtml+='</ul>';
+    					  $('.fruit-listings').html(newListingHtml);
+    					  window.alert("Received "+baskets.length+" items");
+    					  
+    					  
+    				  },
+    				  error:function(err){
+    					  window.alert("We were unable to retrieve your basket at this time");
+    					  console.error(err);
+    				  }
+    			  });
+        	  })
+          })
+      </script>
+   </body>
+</html>
