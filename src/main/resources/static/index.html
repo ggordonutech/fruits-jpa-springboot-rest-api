@@ -4,12 +4,13 @@
        <link href="assets/css/app.css" rel="stylesheet"/>
        <title>Fruit Basket Tutorial</title>
    </head>
-   <body>
+   <body ng-app="fruitbasket">
       <div class="row app">
           <div class="row header">
               <img src="assets/img/fruitbasket.jpg" alt="Fruit Basket" />
               <h1><i><u>Le Fruit a la carte!</u></i></h1>
           </div>
+          <basket></basket>
           <div class="row options">
              <button id="btnAdd">Add</button>
              <button id="btnRemove">Remove</button>
@@ -23,5 +24,6 @@
       <script type="text/javascript" src="assets/js/underscore-min.js"></script>
       <script type="text/javascript" src="assets/js/restangular.min.js"></script>
       <script type="text/javascript" src="assets/js/angular-app.js"></script>
+      <script type="text/javascript" src="assets/components/basket/basket.component.js"></script>
    </body>
 </html>
